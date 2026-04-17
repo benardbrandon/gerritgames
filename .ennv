@@ -1,0 +1,25 @@
+# ============================================================
+# GerritGames Environment Configuration
+# ============================================================
+# Copy this file to .env and fill in your values
+# NEVER commit .env to version control
+
+# --- Railway MySQL (auto-injected by Railway) ---
+# Option A: Full connection URL (preferred)
+DATABASE_URL="mysql://USER:PASSWORD@HOST:PORT/DATABASE"
+
+# Option B: Individual vars (Railway injects these automatically)
+# MYSQLHOST=mysql.railway.internal
+# MYSQLPORT=3306
+# MYSQLUSER=root
+# MYSQLPASSWORD=your_password
+# MYSQLDATABASE=railway
+
+# --- App Config ---
+PORT=3000
+NODE_ENV=development
+
+# --- Site Settings ---
+SITE_NAME="GerritGames"
+SITE_URL="https://your-app.railway.app"
+ITEMS_PER_PAGE=12

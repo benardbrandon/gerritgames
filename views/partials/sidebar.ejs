@@ -1,0 +1,37 @@
+<!-- ── SIDEBAR ──────────────────────────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <h3 class="sidebar-title">Categories</h3>
+    <ul class="category-list">
+      <% if (typeof categories !== 'undefined') { %>
+        <% categories.forEach(cat => { %>
+          <li>
+            <a href="/category/<%= cat.slug %>"
+               class="<%= typeof category !== 'undefined' && category.slug === cat.slug ? 'active' : '' %>">
+              <%= cat.name %>
+              <% if (cat._count) { %>
+                <span class="count"><%= cat._count.games %></span>
+              <% } %>
+            </a>
+          </li>
+        <% }) %>
+      <% } %>
+    </ul>
+  </div>
+
+  <% if (typeof mostDownloaded !== 'undefined' && mostDownloaded.length > 0) { %>
+  <div class="sidebar-section">
+    <h3 class="sidebar-title">Most Downloaded</h3>
+    <div class="most-downloaded-grid">
+      <% mostDownloaded.slice(0, 8).forEach(game => { %>
+        <a href="/games/<%= game.slug %>" class="thumb-link" title="<%= game.title %>">
+          <img src="<%= game.thumbnailUrl || '/images/placeholder.jpg' %>"
+               alt="<%= game.title %>"
+               loading="lazy"
+               onerror="this.src='/images/placeholder.jpg'">
+        </a>
+      <% }) %>
+    </div>
+  </div>
+  <% } %>
+</aside>

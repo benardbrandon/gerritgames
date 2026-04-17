@@ -1,0 +1,77 @@
+<%- include('partials/header') %>
+
+<!-- ── HERO / FEATURED BANNER ──────────────────── -->
+<section class="featured-banner">
+  <% if (featured && featured.length > 0) { %>
+    <div class="featured-track" id="featuredTrack">
+      <% featured.forEach((game, i) => { %>
+        <div class="featured-slide <%= i === 0 ? 'active' : '' %>">
+          <img src="<%= game.bannerUrl || game.thumbnailUrl || '/images/placeholder.jpg' %>"
+               alt="<%= game.title %>"
+               onerror="this.src='/images/placeholder.jpg'">
+          <div class="featured-overlay">
+            <h2><%= game.title %></h2>
+            <a href="/games/<%= game.slug %>" class="btn btn-primary">View Game</a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+    <% if (featured.length > 1) { %>
+      <div class="featured-dots">
+        <% featured.forEach((_, i) => { %>
+          <button class="dot <%= i === 0 ? 'active' : '' %>" data-index="<%= i %>"></button>
+        <% }) %>
+      </div>
+    <% } %>
+  <% } %>
+</section>
+
+<!-- ── MAIN CONTENT ─────────────────────────────── -->
+<div class="page-layout">
+  <%- include('partials/sidebar') %>
+
+  <main class="main-content">
+    <div class="section-header">
+      <h2 class="section-title">Latest Games</h2>
+    </div>
+
+    <div class="games-grid">
+      <% latestGames.forEach(game => { %>
+        <article class="game-card">
+          <a href="/games/<%= game.slug %>" class="card-thumb">
+            <img src="<%= game.thumbnailUrl || '/images/placeholder.jpg' %>"
+                 alt="<%= game.title %>"
+                 loading="lazy"
+                 onerror="this.src='/images/placeholder.jpg'">
+            <span class="card-platform"><%= game.platform %></span>
+          </a>
+          <div class="card-body">
+            <h3 class="card-title">
+              <a href="/games/<%= game.slug %>"><%= game.title %></a>
+            </h3>
+            <p class="card-desc"><%= game.description.substring(0, 120) %>...</p>
+            <div class="card-meta">
+              <div class="card-cats">
+                <% game.categories.slice(0, 2).forEach(gc => { %>
+                  <a href="/category/<%= gc.category.slug %>" class="tag"><%= gc.category.name %></a>
+                <% }) %>
+              </div>
+              <span class="card-size"><%= game.fileSize %></span>
+            </div>
+            <div class="card-actions">
+              <a href="/games/<%= game.slug %>" class="btn btn-outline btn-sm">Read More</a>
+              <button class="btn btn-primary btn-sm download-btn"
+                      data-slug="<%= game.slug %>"
+                      data-magnet="<%= game.magnetUri %>"
+                      data-title="<%= game.title %>">
+                ⬇ Download
+              </button>
+            </div>
+          </div>
+        </article>
+      <% }) %>
+    </div>
+  </main>
+</div>
+
+<%- include('partials/footer') %>

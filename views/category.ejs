@@ -1,0 +1,71 @@
+<%- include('partials/header') %>
+
+<div class="page-layout">
+  <%- include('partials/sidebar') %>
+
+  <main class="main-content">
+    <div class="section-header">
+      <h2 class="section-title"><%= category.name %> Games</h2>
+      <span class="section-count"><%= total %> title<%= total !== 1 ? 's' : '' %></span>
+    </div>
+
+    <% if (games.length === 0) { %>
+      <div class="empty-state glass-panel">
+        <div class="empty-icon">🎮</div>
+        <h3>No games in this category yet</h3>
+        <a href="/" class="btn btn-primary">Back to Home</a>
+      </div>
+    <% } else { %>
+      <div class="games-grid">
+        <% games.forEach(game => { %>
+          <article class="game-card">
+            <a href="/games/<%= game.slug %>" class="card-thumb">
+              <img src="<%= game.thumbnailUrl || '/images/placeholder.jpg' %>"
+                   alt="<%= game.title %>" loading="lazy"
+                   onerror="this.src='/images/placeholder.jpg'">
+              <span class="card-platform"><%= game.platform %></span>
+            </a>
+            <div class="card-body">
+              <h3 class="card-title">
+                <a href="/games/<%= game.slug %>"><%= game.title %></a>
+              </h3>
+              <p class="card-desc"><%= game.description.substring(0, 120) %>...</p>
+              <div class="card-meta">
+                <div class="card-cats">
+                  <% game.categories.slice(0, 2).forEach(gc => { %>
+                    <a href="/category/<%= gc.category.slug %>" class="tag"><%= gc.category.name %></a>
+                  <% }) %>
+                </div>
+                <span class="card-size"><%= game.fileSize %></span>
+              </div>
+              <div class="card-actions">
+                <a href="/games/<%= game.slug %>" class="btn btn-outline btn-sm">Read More</a>
+                <button class="btn btn-primary btn-sm download-btn"
+                        data-slug="<%= game.slug %>"
+                        data-magnet="<%= game.magnetUri %>"
+                        data-title="<%= game.title %>">⬇ Download</button>
+              </div>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+
+      <% if (totalPages > 1) { %>
+        <nav class="pagination">
+          <% if (page > 1) { %>
+            <a href="/category/<%= category.slug %>?page=<%= page - 1 %>" class="page-btn">&laquo; Prev</a>
+          <% } %>
+          <% for (let i = Math.max(1, page-2); i <= Math.min(totalPages, page+2); i++) { %>
+            <a href="/category/<%= category.slug %>?page=<%= i %>"
+               class="page-btn <%= i === page ? 'active' : '' %>"><%= i %></a>
+          <% } %>
+          <% if (page < totalPages) { %>
+            <a href="/category/<%= category.slug %>?page=<%= page + 1 %>" class="page-btn">Next &raquo;</a>
+          <% } %>
+        </nav>
+      <% } %>
+    <% } %>
+  </main>
+</div>
+
+<%- include('partials/footer') %>

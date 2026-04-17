@@ -1,0 +1,12 @@
+<%- include('partials/header') %>
+<div class="page-layout">
+  <main class="main-content" style="max-width:700px;margin:60px auto;text-align:center;">
+    <div class="glass-panel error-page">
+      <div class="error-code"><%= code %></div>
+      <h2><%= title %></h2>
+      <p><%= message %></p>
+      <a href="/" class="btn btn-primary" style="margin-top:20px;">← Back to Home</a>
+    </div>
+  </main>
+</div>
+<%- include('partials/footer') %>

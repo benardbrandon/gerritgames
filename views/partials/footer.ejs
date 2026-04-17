@@ -1,0 +1,57 @@
+<!-- ── FOOTER ─────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo-text"><%= siteName %></span>
+      <p>Your #1 source for PC game downloads.<br>Fast. Free. No BS.</p>
+    </div>
+    <div class="footer-links">
+      <h4>Navigate</h4>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </div>
+    <div class="footer-links">
+      <h4>Categories</h4>
+      <a href="/category/action">Action</a>
+      <a href="/category/rpg">RPG</a>
+      <a href="/category/racing">Racing</a>
+      <a href="/category/open-world">Open World</a>
+    </div>
+    <div class="footer-links">
+      <h4>Tools</h4>
+      <a href="https://www.utorrent.com/intl/en/downloads/win" target="_blank" rel="noopener">uTorrent</a>
+      <a href="https://www.qbittorrent.org/download" target="_blank" rel="noopener">qBittorrent</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; <%= currentYear %> <%= siteName %>. All rights reserved. For educational purposes only.</p>
+  </div>
+</footer>
+
+<!-- ── UTORRENT DOWNLOAD MODAL ──────────────────────── -->
+<div id="downloadModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box glass">
+    <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+    <div class="modal-icon">⬇️</div>
+    <h2 id="modalTitle">Download Starting...</h2>
+    <p id="modalGameTitle" class="modal-subtitle"></p>
+    <p class="modal-desc">
+      Your download has been triggered via the magnet link.<br>
+      Make sure you have a torrent client installed.
+    </p>
+    <div class="modal-actions">
+      <a href="https://www.utorrent.com/intl/en/downloads/win" target="_blank" rel="noopener" class="btn btn-primary">
+        📦 Get uTorrent (Free)
+      </a>
+      <a href="https://www.qbittorrent.org/download" target="_blank" rel="noopener" class="btn btn-secondary">
+        📦 Get qBittorrent (Open Source)
+      </a>
+    </div>
+    <p class="modal-hint">Already have a client? The magnet link opened automatically.</p>
+  </div>
+</div>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

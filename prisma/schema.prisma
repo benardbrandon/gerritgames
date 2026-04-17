@@ -1,0 +1,98 @@
+// prisma/schema.prisma
+// GerritGames - Torrent Indexer Database Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Game {
+  id           Int      @id @default(autoincrement())
+  title        String   @db.VarChar(255)
+  slug         String   @unique @db.VarChar(255)
+  magnetUri    String   @db.Text
+  infoHash     String?  @db.VarChar(100)
+  fileSize     String   @db.VarChar(50)   // e.g. "45 GB"
+  fileSizeBytes BigInt?
+  description  String   @db.Text
+  thumbnailUrl String?  @db.VarChar(500)
+  bannerUrl    String?  @db.VarChar(500)
+  platform     String   @default("PC")    // PC, PS5, Xbox, etc.
+  testedOn     String?  @db.VarChar(100)
+  architecture String   @default("x64")
+  version      String?  @db.VarChar(50)
+  downloads    Int      @default(0)
+  isActive     Boolean  @default(true)
+  isFeatured   Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  requirements SystemRequirements?
+  categories   GameCategory[]
+  fileList     TorrentFile[]
+
+  @@index([slug])
+  @@index([downloads])
+  @@index([createdAt])
+  @@index([isFeatured])
+}
+
+model SystemRequirements {
+  id     Int  @id @default(autoincrement())
+  gameId Int  @unique
+  game   Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  // Minimum
+  minOs      String? @db.VarChar(100)
+  minCpu     String? @db.VarChar(150)
+  minGpu     String? @db.VarChar(150)
+  minRam     String? @db.VarChar(50)
+  minStorage String? @db.VarChar(50)
+  minDirectX String? @db.VarChar(50)
+
+  // Recommended
+  recOs      String? @db.VarChar(100)
+  recCpu     String? @db.VarChar(150)
+  recGpu     String? @db.VarChar(150)
+  recRam     String? @db.VarChar(50)
+  recStorage String? @db.VarChar(50)
+  recDirectX String? @db.VarChar(50)
+
+  // Troubleshooting
+  fixNotes String? @db.Text
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique @db.VarChar(100)
+  slug  String @unique @db.VarChar(100)
+  games GameCategory[]
+
+  @@index([slug])
+}
+
+// Many-to-many pivot table
+model GameCategory {
+  gameId     Int
+  categoryId Int
+  game       Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([gameId, categoryId])
+}
+
+// Parsed torrent file listing
+model TorrentFile {
+  id     Int    @id @default(autoincrement())
+  gameId Int
+  game   Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  path   String @db.VarChar(500)
+  length BigInt
+
+  @@index([gameId])
+}

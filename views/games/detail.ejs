@@ -1,0 +1,188 @@
+<%- include('../partials/header') %>
+
+<div class="game-hero">
+  <img src="<%= game.bannerUrl || game.thumbnailUrl || '/images/placeholder.jpg' %>"
+       alt="<%= game.title %>" class="hero-banner"
+       onerror="this.src='/images/placeholder.jpg'">
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <div class="breadcrumb">
+        <a href="/">Home</a> &rsaquo;
+        <% game.categories.slice(0,1).forEach(gc => { %>
+          <a href="/category/<%= gc.category.slug %>"><%= gc.category.name %></a> &rsaquo;
+        <% }) %>
+        <span><%= game.title %></span>
+      </div>
+      <h1 class="hero-title"><%= game.title %></h1>
+      <div class="hero-tags">
+        <% game.categories.forEach(gc => { %>
+          <a href="/category/<%= gc.category.slug %>" class="tag"><%= gc.category.name %></a>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-layout">
+  <%- include('../partials/sidebar') %>
+
+  <main class="main-content">
+    <!-- ── GAME INFO CARD ────────────────────────── -->
+    <div class="detail-layout">
+      <div class="detail-main">
+
+        <!-- Screenshots -->
+        <% if (game.bannerUrl) { %>
+        <section class="screenshots">
+          <img src="<%= game.bannerUrl %>" alt="<%= game.title %> screenshot"
+               onerror="this.style.display='none'" class="screenshot-img">
+        </section>
+        <% } %>
+
+        <!-- Tab Navigation -->
+        <div class="tabs" id="gameTabs">
+          <button class="tab-btn active" data-tab="description">Description</button>
+          <button class="tab-btn" data-tab="requirements">System Requirements</button>
+          <% if (game.fileList && game.fileList.length > 0) { %>
+            <button class="tab-btn" data-tab="files">File List (<%= game.fileList.length %>)</button>
+          <% } %>
+          <button class="tab-btn" data-tab="fix">Fix / Help</button>
+        </div>
+
+        <!-- Description Tab -->
+        <div class="tab-content active" id="tab-description">
+          <div class="glass-panel">
+            <h2>About <%= game.title %></h2>
+            <p><%= game.description %></p>
+          </div>
+        </div>
+
+        <!-- System Requirements Tab -->
+        <div class="tab-content" id="tab-requirements">
+          <% if (game.requirements) { %>
+          <div class="requirements-grid">
+            <div class="req-col glass-panel">
+              <h3>⚙️ Minimum</h3>
+              <ul class="req-list">
+                <% if (game.requirements.minOs) { %><li><strong>OS:</strong> <%= game.requirements.minOs %></li><% } %>
+                <% if (game.requirements.minCpu) { %><li><strong>CPU:</strong> <%= game.requirements.minCpu %></li><% } %>
+                <% if (game.requirements.minGpu) { %><li><strong>GPU:</strong> <%= game.requirements.minGpu %></li><% } %>
+                <% if (game.requirements.minRam) { %><li><strong>RAM:</strong> <%= game.requirements.minRam %></li><% } %>
+                <% if (game.requirements.minStorage) { %><li><strong>Storage:</strong> <%= game.requirements.minStorage %></li><% } %>
+                <% if (game.requirements.minDirectX) { %><li><strong>DirectX:</strong> <%= game.requirements.minDirectX %></li><% } %>
+              </ul>
+            </div>
+            <div class="req-col glass-panel">
+              <h3>🚀 Recommended</h3>
+              <ul class="req-list">
+                <% if (game.requirements.recOs) { %><li><strong>OS:</strong> <%= game.requirements.recOs %></li><% } %>
+                <% if (game.requirements.recCpu) { %><li><strong>CPU:</strong> <%= game.requirements.recCpu %></li><% } %>
+                <% if (game.requirements.recGpu) { %><li><strong>GPU:</strong> <%= game.requirements.recGpu %></li><% } %>
+                <% if (game.requirements.recRam) { %><li><strong>RAM:</strong> <%= game.requirements.recRam %></li><% } %>
+                <% if (game.requirements.recStorage) { %><li><strong>Storage:</strong> <%= game.requirements.recStorage %></li><% } %>
+                <% if (game.requirements.recDirectX) { %><li><strong>DirectX:</strong> <%= game.requirements.recDirectX %></li><% } %>
+              </ul>
+            </div>
+          </div>
+          <% } else { %>
+            <div class="glass-panel"><p>System requirements not available for this title.</p></div>
+          <% } %>
+        </div>
+
+        <!-- File List Tab -->
+        <% if (game.fileList && game.fileList.length > 0) { %>
+        <div class="tab-content" id="tab-files">
+          <div class="glass-panel">
+            <h3>📁 Torrent Contents</h3>
+            <div class="file-tree">
+              <% game.fileList.forEach(f => { %>
+                <div class="file-row">
+                  <span class="file-path"><%= f.path %></span>
+                  <span class="file-size"><%= (Number(f.length) / (1024*1024*1024)).toFixed(2) %> GB</span>
+                </div>
+              <% }) %>
+            </div>
+          </div>
+        </div>
+        <% } %>
+
+        <!-- Fix Tab -->
+        <div class="tab-content" id="tab-fix">
+          <div class="glass-panel">
+            <h3>🔧 Troubleshooting</h3>
+            <% if (game.requirements && game.requirements.fixNotes) { %>
+              <pre class="fix-notes"><%= game.requirements.fixNotes %></pre>
+            <% } else { %>
+              <ul class="req-list">
+                <li>Update your graphics drivers to the latest version</li>
+                <li>Install Visual C++ Redistributable (2019/2022)</li>
+                <li>Install DirectX End-User Runtime</li>
+                <li>Run the game as Administrator</li>
+                <li>Disable real-time antivirus during installation</li>
+                <li>Ensure at least 4GB free RAM before launching</li>
+              </ul>
+            <% } %>
+          </div>
+        </div>
+
+      </div><!-- /.detail-main -->
+
+      <!-- ── DOWNLOAD SIDEBAR CARD ─────────── -->
+      <aside class="detail-sidebar">
+        <div class="download-card glass-panel">
+          <div class="game-thumb-wrap">
+            <img src="<%= game.thumbnailUrl || '/images/placeholder.jpg' %>"
+                 alt="<%= game.title %>"
+                 onerror="this.src='/images/placeholder.jpg'">
+          </div>
+          <h3><%= game.title %></h3>
+          <ul class="game-details-list">
+            <li><strong>Platform:</strong> <%= game.platform %></li>
+            <li><strong>Tested On:</strong> <%= game.testedOn || 'Windows 10/11' %></li>
+            <li><strong>Size:</strong> <span class="highlight"><%= game.fileSize %></span></li>
+            <li><strong>Architecture:</strong> <%= game.architecture %></li>
+            <% if (game.version) { %><li><strong>Version:</strong> <%= game.version %></li><% } %>
+            <li><strong>Downloads:</strong> <%= game.downloads.toLocaleString() %></li>
+            <li><strong>Updated:</strong> <%= new Date(game.updatedAt).toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'}) %></li>
+          </ul>
+
+          <!-- THE DOWNLOAD BRIDGE BUTTON -->
+          <button class="btn btn-download download-btn"
+                  data-slug="<%= game.slug %>"
+                  data-magnet="<%= game.magnetUri %>"
+                  data-title="<%= game.title %>">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Download Now
+          </button>
+
+          <p class="magnet-hint">Clicking opens your torrent client via magnet link</p>
+        </div>
+
+        <!-- Related Games -->
+        <% if (related && related.length > 0) { %>
+        <div class="related-games glass-panel">
+          <h4>You May Also Like</h4>
+          <% related.forEach(r => { %>
+            <a href="/games/<%= r.slug %>" class="related-item">
+              <img src="<%= r.thumbnailUrl || '/images/placeholder.jpg' %>"
+                   alt="<%= r.title %>"
+                   onerror="this.src='/images/placeholder.jpg'">
+              <div>
+                <span class="related-title"><%= r.title %></span>
+                <span class="related-size"><%= r.fileSize %></span>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+        <% } %>
+      </aside>
+
+    </div><!-- /.detail-layout -->
+  </main>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+<div class="page-layout">
+  <main class="main-content" style="max-width:800px;margin:40px auto;">
+    <div class="glass-panel" style="padding:40px;">
+      <h1 style="color:var(--accent);margin-bottom:20px;">About <%= siteName %></h1>
+      <p style="color:#ccc;line-height:1.8;margin-bottom:16px;">
+        <%= siteName %> is a community-driven PC game indexer. We catalog games with their magnet links,
+        system requirements, and torrent metadata so you can find and download games quickly.
+      </p>
+      <p style="color:#ccc;line-height:1.8;margin-bottom:16px;">
+        All downloads are provided for educational and archival purposes.
+        We encourage you to support developers by purchasing games you enjoy.
+      </p>
+      <h2 style="color:var(--accent);margin:30px 0 16px;">Recommended Clients</h2>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;">
+        <a href="https://www.utorrent.com/intl/en/downloads/win" target="_blank" class="btn btn-primary">📦 uTorrent</a>
+        <a href="https://www.qbittorrent.org/download" target="_blank" class="btn btn-secondary">📦 qBittorrent (Open Source)</a>
+      </div>
+    </div>
+  </main>
+</div>
+<%- include('partials/footer') %>
